@@ -5,35 +5,39 @@ import {TodoForm, TodoList} from './component/todo/index';
 import {addTodo, generateId} from './component/lib/todoHelpers';
 
 class App extends Component {
-  constructor(){
-    super()
-    this.state = {
+  state = {
       todos:[
         {"id":1, "name":"Learn Jsx", isCompleted:true},
         {"id":2, "name":"Build an Awesome App", isCompleted:false},
         {"id":3, "name":"Ship it", isCompleted:false}
       ],
       currentTodo:'',
-    }
-      this.handleInputChange = this.handleInputChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
+      errorMessage:''
   }
-  handleSubmit(evt) {
+  handleSubmit = (evt) => {
     evt.preventDefault();
     const newId = generateId();
     const newTodo = {id:newId, name:this.state.currentTodo, isCompleted:false}
     const updatedTodo = addTodo(this.state.todos, newTodo);
     this.setState({
       todos: updatedTodo,
-      currentTodo:'' 
+      currentTodo:'',
+      errorMessage:''
     })
   }
-  handleInputChange(evt) {
+  handleEmptySubmit = (evt) => {
+    evt.preventDefault()
+    this.setState({
+      errorMessage:'Please Enter a Message'
+    })
+  }
+  handleInputChange = (evt) => {
     this.setState({
       currentTodo:evt.target.value
     });
   }
   render() {
+    const submitHandler = this.state.currentTodo ? this.handleSubmit : this.handleEmptySubmit;
     return (
         <div className="App">
           <div className="App-header">
@@ -41,8 +45,9 @@ class App extends Component {
             <h2>Sudhir Madaan React First App</h2>
           </div>
           <div className="To-do">
+            {this.state.errorMessage && <span className='error'>{this.state.errorMessage}</span>}
             <TodoForm handleInputChange={this.handleInputChange} 
-              handleSubmit={this.handleSubmit}
+              handleSubmit={submitHandler}
               currentTodo={this.state.currentTodo} />
             <TodoList todos={this.state.todos}  />
           </div>
@@ -52,3 +57,42 @@ class App extends Component {
 }
 
 export default App;
+
+
+
+  // constructor(){
+  //   super()
+  //   this.state = {
+  //     todos:[
+  //       {"id":1, "name":"Learn Jsx", isCompleted:true},
+  //       {"id":2, "name":"Build an Awesome App", isCompleted:false},
+  //       {"id":3, "name":"Ship it", isCompleted:false}
+  //     ],
+  //     currentTodo:'',
+  //     errorMessage:''
+  //   }
+  //     this.handleInputChange = this.handleInputChange.bind(this);
+  //     this.handleSubmit = this.handleSubmit.bind(this);
+  //     this.handleEmptySubmit = this.handleEmptySubmit.bind(this);
+  // }
+  // handleSubmit(evt) {
+  //   evt.preventDefault();
+  //   const newId = generateId();
+  //   const newTodo = {id:newId, name:this.state.currentTodo, isCompleted:false}
+  //   const updatedTodo = addTodo(this.state.todos, newTodo);
+  //   this.setState({
+  //     todos: updatedTodo,
+  //     currentTodo:'' 
+  //   })
+  // }
+  // handleEmptySubmit(evt) {
+  //   evt.preventDefault()
+  //   this.setState({
+  //     errorMessage:'Please Enter a Message'
+  //   })
+  // }
+  // handleInputChange(evt) {
+  //   this.setState({
+  //     currentTodo:evt.target.value
+  //   });
+  // }
