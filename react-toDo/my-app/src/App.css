@@ -44,3 +44,30 @@ li {
 .error {
   color: red;
 }
+
+.remove {
+  font-size: 14px;
+  font-weight: bold;
+  color: red;
+  display: inline-block;
+  text-decoration: none;
+  margin-left: 10px;
+  visibility: hidden;
+}
+
+li:hover a {
+  visibility: visible;
+}
+
+.footer a {
+  padding-left: 10px;
+  padding-top: 20px;
+}
+
+.footer a.active {
+  font-weight: bold;
+}
+
+.success {
+  color: green;
+}
